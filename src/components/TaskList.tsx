@@ -61,15 +61,15 @@ export default function TaskList({ tasks, onAddTask, onStatus, onDelete, search,
   return (
     <div className="space-y-4">
       {/* Add Task Input */}
-      <div className={`rounded-2xl border p-4 flex items-center gap-3 ${dm ? 'bg-[#221d14] border-[#3a3020]' : 'bg-white border-[#e8e0cc]'}`}>
-        <PenLine size={16} className={dm ? 'text-[#6b5c42]' : 'text-[#b8a98a]'} />
+      <div className={`rounded-2xl border p-4 flex flex-wrap items-center gap-3 ${dm ? 'bg-[#221d14] border-[#3a3020]' : 'bg-white border-[#e8e0cc]'}`}>
+        <PenLine size={16} className={`hidden sm:block flex-shrink-0 ${dm ? 'text-[#6b5c42]' : 'text-[#b8a98a]'}`} />
         <input
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleAdd()}
           placeholder="Add a task to the ledger..."
-          className={`flex-1 text-sm bg-transparent outline-none ${dm ? 'text-[#e8d9b5] placeholder-[#6b5c42]' : 'text-[#2c2416] placeholder-[#b8a98a]'}`}
+          className={`flex-1 min-w-[140px] text-sm bg-transparent outline-none ${dm ? 'text-[#e8d9b5] placeholder-[#6b5c42]' : 'text-[#2c2416] placeholder-[#b8a98a]'}`}
         />
 
         {/* Category dropdown */}
@@ -111,7 +111,7 @@ export default function TaskList({ tasks, onAddTask, onStatus, onDelete, search,
         <button
           onClick={handleAdd}
           disabled={!title.trim()}
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#2c2416] text-[#e8d9b5] rounded-xl text-sm font-semibold hover:bg-[#3d3020] transition-colors disabled:opacity-40"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#2c2416] text-[#e8d9b5] rounded-xl text-sm font-semibold hover:bg-[#3d3020] transition-colors disabled:opacity-40 w-full sm:w-auto"
         >
           <Plus size={15} />
           ADD TASK
@@ -119,8 +119,8 @@ export default function TaskList({ tasks, onAddTask, onStatus, onDelete, search,
       </div>
 
       {/* Filters + Sort */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center gap-2 flex-wrap">
           {FILTERS.map(f => (
             <button
               key={f.key}
@@ -172,7 +172,7 @@ export default function TaskList({ tasks, onAddTask, onStatus, onDelete, search,
 
       {/* Footer */}
       {tasks.length > 0 && (
-        <div className={`rounded-2xl border px-6 py-3.5 flex items-center gap-6 text-sm ${dm ? 'bg-[#221d14] border-[#3a3020]' : 'bg-white border-[#e8e0cc]'}`}>
+        <div className={`rounded-2xl border px-4 sm:px-6 py-3.5 flex flex-wrap items-center gap-x-6 gap-y-1.5 text-sm ${dm ? 'bg-[#221d14] border-[#3a3020]' : 'bg-white border-[#e8e0cc]'}`}>
           <div className={`flex items-center gap-2 ${dm ? 'text-[#9c8a6a]' : 'text-[#6b5c42]'}`}>
             <span>Total Tasks: {tasks.length}</span>
           </div>
@@ -182,7 +182,7 @@ export default function TaskList({ tasks, onAddTask, onStatus, onDelete, search,
           <div className="flex items-center gap-2 text-[#cc4444]">
             <span>Skipped: {counts.skipped}</span>
           </div>
-          <div className="ml-auto flex items-center gap-2 text-[#4466aa]">
+          <div className="sm:ml-auto flex items-center gap-2 text-[#4466aa]">
             <span>Completion Rate: {tasks.length > 0 ? Math.round((counts.done / tasks.length) * 100) : 0}%</span>
           </div>
         </div>
