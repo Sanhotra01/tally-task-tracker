@@ -19,6 +19,7 @@ export default function App() {
   const [date, setDate] = useState(new Date());
   const [search, setSearch] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     if (darkMode) document.body.classList.add('dark');
@@ -49,10 +50,12 @@ export default function App() {
     <div className={`flex h-screen ${bgMain} overflow-hidden`}>
       <Sidebar
         currentPage={page}
-        onNavigate={setPage}
+        onNavigate={p => { setPage(p); setMobileNavOpen(false); }}
         darkMode={dm}
         onToggleDarkMode={() => setDarkMode(!dm)}
         user={user}
+        isOpen={mobileNavOpen}
+        onClose={() => setMobileNavOpen(false)}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -65,6 +68,7 @@ export default function App() {
           notifications={pendingCount}
           user={user}
           darkMode={dm}
+          onOpenMenu={() => setMobileNavOpen(true)}
         />
 
         <main className="flex-1 overflow-y-auto">
