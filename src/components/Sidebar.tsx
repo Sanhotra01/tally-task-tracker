@@ -1,4 +1,4 @@
-import { BookOpen, Home, Calendar, List, BarChart2, Tag, Clock, Settings, Moon, Sun } from 'lucide-react';
+import { BookOpen, Home, Calendar, List, BarChart2, Tag, Clock, Settings, Moon, Sun, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 
@@ -10,6 +10,8 @@ interface SidebarProps {
   darkMode: boolean;
   onToggleDarkMode: () => void;
   user: User;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const navItems: { id: Page; label: string; Icon: React.ElementType }[] = [
@@ -31,13 +33,32 @@ const QUOTES = [
 
 const quote = QUOTES[Math.floor(Date.now() / 86400000) % QUOTES.length];
 
-export default function Sidebar({ currentPage, onNavigate, darkMode, onToggleDarkMode }: SidebarProps) {
+export default function Sidebar({ currentPage, onNavigate, darkMode, onToggleDarkMode, isOpen, onClose }: SidebarProps) {
   const dm = darkMode;
 
   return (
-    <aside className={`w-60 flex-shrink-0 flex flex-col h-screen border-r ${dm ? 'bg-[#1a1510] border-[#2a2218] text-[#e8d9b5]' : 'bg-[#f0ead8] border-[#ddd0b5] text-[#2c2416]'}`}>
+    <>
+      {/* Mobile backdrop */}
+      {isOpen && (
+        <div
+          onClick={onClose}
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+        />
+      )}
+
+      <aside
+        className={`w-72 sm:w-60 flex-shrink-0 flex flex-col h-screen border-r fixed md:static top-0 left-0 z-50 transition-transform duration-200 ease-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0
+        ${dm ? 'bg-[#1a1510] border-[#2a2218] text-[#e8d9b5]' : 'bg-[#f0ead8] border-[#ddd0b5] text-[#2c2416]'}`}
+      >
       {/* Logo */}
-      <div className="px-6 pt-8 pb-6 text-center border-b border-current/10">
+      <div className="px-6 pt-8 pb-6 text-center border-b border-current/10 relative">
+        <button
+          onClick={onClose}
+          className={`md:hidden absolute right-3 top-3 p-1.5 rounded-lg ${dm ? 'hover:bg-[#2a2218] text-[#9c8a6a]' : 'hover:bg-[#e4dcc8] text-[#6b5c42]'}`}
+        >
+          <X size={18} />
+        </button>
         <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 ${dm ? 'bg-[#e8d9b5]' : 'bg-[#2c2416]'}`}>
           <BookOpen size={22} className={dm ? 'text-[#2c2416]' : 'text-[#e8d9b5]'} />
         </div>
@@ -100,5 +121,6 @@ export default function Sidebar({ currentPage, onNavigate, darkMode, onToggleDar
         Sign Out
       </button>
     </aside>
+    </>
   );
 }
